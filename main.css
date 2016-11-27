@@ -3,7 +3,54 @@
 }
 
 body {
-    max-width: 1800px;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding-top: 100px;
+    text-align: center;
+    background-image: url(images/flag_2560x1440.jpg);
+}
+
+h1 {
+    color: darkgray;
+}
+.hidden {
+    display: none;
+}
+
+.address-form {
+    width: 440px;
     margin: 0 auto;
     padding: 20px;
+}
+
+.address-form input {
+    width: 100%;
+    height: 35px;
+    font-size: 14px;
+    font-weight: bold;
+    color: darkslategrey;
+}
+
+.address-form .state {
+    font-size: 14px;
+    font-weight: bold;
+    height: 35px;
+    width: 260px;
+}
+.address-form .zip {
+    width: 120px;
+    margin-left: 15px;
+}
+
+.address-form button {
+    height: 35px;
+    width: 100px;
+    border-radius: 2px;
+    border: 2px solid white;
+}
+
+.search-results {
+    margin-top: 20px;
+    border: 2px solid white;
+    background-color: white;
 }

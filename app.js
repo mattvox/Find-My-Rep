@@ -17,8 +17,8 @@ function getDataFromGeocodio(userAddress, callback) {
 function getDataFromGovTrack(userState, callback) {
     var query = {
         current: true,
-        state: 'NJ',
-        district: '11'
+        state: USER_DATA.state,
+        district: USER_DATA.district
     }
     $.getJSON(GOVTRACK_URL, query, callback);
 }
@@ -32,28 +32,49 @@ function displayResults(data) {
     
     searchResult += '<p>District Number: ' + districtNumber + '</p>';
     
-    $('.js-search-results').html(searchResult);
+    $('.js-search-results .district').append(searchResult);
 }
 
 function displayResults2(data) {
     console.log(data);
+    
+    var searchResult = '';
+    
+    var firstName = data.objects[0].person.firstname;
+    var lastName = data.objects[0].person.lastname;
+    var jobTitle = data.objects[0].description;
+    var personID = data.objects[0].person.id;
+    
+    searchResult += '<p>Congress Number: ' + data.objects[0].congress_numbers + '</p>' +
+        '<p>Name: ' + firstName + ' ' + lastName + '</p>' +
+        '<p>Job Title: ' + jobTitle + '</p>' +
+        '<img src="https://www.govtrack.us/data/photos/' + personID + '-200px.jpeg">';
+    
+    $('.js-search-results .bio-data').append(searchResult);
 }
 
 function formSubmit() {
     $('.js-form').submit(function(event) {
         event.preventDefault();
+        // shorten this code
         
-        var street = $(this).find('.js-street').val();
-        var city = $(this).find('.js-city').val();
-        var state = $(this).find('.js-state').val();
-        var zip = $(this).find('.js-zip').val();
+        $('.js-search-results').removeClass('hidden');
+        
+        var street = $('.js-street').val(); 
+        var city = $('.js-city').val();
+        var state = $('.js-state').val();
+        var zip = $('.js-zip').val();
         
         var userAddress = street + ", " + zip;
         
         USER_DATA.state = state;
         
-        getDataFromGeocodio(userAddress, displayResults);
-        getDataFromGovTrack(state, displayResults2);
+//        getDataFromGeocodio(userAddress, displayResults);
+////        alert('about to run next line of code')
+//        getDataFromGovTrack(state, displayResults2);
+        // promises
+        $.when(getDataFromGeocodio(userAddress, displayResults)).then(getDataFromGovTrack(state, displayResults2));
+        
     });
 }
 
